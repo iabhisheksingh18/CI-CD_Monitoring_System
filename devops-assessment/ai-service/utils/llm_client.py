@@ -5,6 +5,20 @@ from openai import OpenAI
 def get_llm_client():
     provider = os.getenv("LLM_PROVIDER", "openai").lower()
     
+    if provider == "openrouter":
+        api_key = os.getenv("OPENROUTER_API_KEY") or os.getenv("OPENAI_API_KEY")
+        if not api_key:
+            return None, os.getenv("LLM_MODEL", "openai/gpt-4o-mini")
+
+        return OpenAI(
+            base_url="https://openrouter.ai/api/v1",
+            api_key=api_key,
+            default_headers={
+                "HTTP-Referer": os.getenv("OPENROUTER_SITE_URL", "http://localhost"),
+                "X-Title": os.getenv("OPENROUTER_APP_NAME", "AI DevOps Assistant"),
+            },
+        ), os.getenv("LLM_MODEL", "openai/gpt-4o-mini")
+
     if provider == "ollama":
         # Connects to local Ollama instance running on default port
         return OpenAI(
@@ -21,8 +35,9 @@ def generate_chat_response(question: str, log_context: str = None) -> str:
     
     if not client:
         return ("> **System Warning:** The AI Brain is currently offline.\n\n"
-                "Please configure a valid `OPENAI_API_KEY` or set `LLM_PROVIDER=ollama` "
-                "in the backend `.env` file to enable the intelligent Chatbot.")
+                "Please configure a valid `OPENAI_API_KEY`, `OPENROUTER_API_KEY`, "
+                "or set `LLM_PROVIDER=ollama` in the AI service `.env` file to "
+                "enable the intelligent Chatbot.")
         
     system_prompt = (
         "You are an elite DevOps, cloud infrastructure, and CI/CD AI Assistant.\n"
@@ -61,7 +76,7 @@ def generate_structured_analysis(log_text: str) -> dict:
         "status": "failure",
         "errorType": "LLM Config Error",
         "rootCause": "The AI service is missing an API key.",
-        "suggestion": "Configure OPENAI_API_KEY or use Ollama."
+        "suggestion": "Configure OPENAI_API_KEY, OPENROUTER_API_KEY, or use Ollama."
     }
     
     if not client:

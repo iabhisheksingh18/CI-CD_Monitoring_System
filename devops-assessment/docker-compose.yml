@@ -1,4 +1,12 @@
 services:
+  mongo:
+    image: mongo:7
+    container_name: cicd-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
   backend:
     build: ./backend
     container_name: springboot-backend
@@ -6,6 +14,11 @@ services:
       - "8080:8080"
     environment:
       - DEBUG=1
+      - MONGODB_URI=mongodb://mongo:27017/cicd_monitoring
+      - JWT_SECRET=change-this-local-development-secret-before-production
+    depends_on:
+      - mongo
+      - ai-service
 
   frontend:
     build:
@@ -26,3 +39,6 @@ services:
       - ./ai-service/.env
     environment:
       - PYTHONUNBUFFERED=1
+
+volumes:
+  mongo-data:
