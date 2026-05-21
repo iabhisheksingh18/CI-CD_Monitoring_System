@@ -1,0 +1,50 @@
+name: Spring Boot Backend CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+    - name: 🔍 Debug - Log Build Context
+      run: |
+        echo "Event: ${{ github.event_name }}"
+        echo "Ref: ${{ github.ref }}"
+        echo "Workspace: $GITHUB_WORKSPACE"
+        pwd
+        ls -R
+
+    - name: 🐙 Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: ☕ Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: 🛠️ Build and Test with Maven
+      run: |
+        echo "Starting Maven Build and Test Phase..."
+        mvn -B package --file pom.xml
+        echo "Maven Build and Test Phase Completed Successfully."
+
+    - name: 📁 Archive Build Artifacts
+      if: success()
+      uses: actions/upload-artifact@v4
+      with:
+        name: spring-boot-jar
+        path: backend/target/*.jar
+
+    - name: 📝 Log Build Success
+      if: success()
+      run: echo "The Spring Boot application was successfully built and tested."

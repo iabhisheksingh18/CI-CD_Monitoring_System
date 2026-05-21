@@ -27,8 +27,8 @@ jobs:
         run: |
           # Sanitize username to remove potential newlines
           CLEAN_USERNAME=$(echo "$DOCKER_USERNAME" | tr -d '\n\r')
-          docker build -t "$CLEAN_USERNAME/devops-backend:latest" ./backend
-          docker push "$CLEAN_USERNAME/devops-backend:latest"
+          docker build -t "$CLEAN_USERNAME/devops-backend-java:latest" ./backend
+          docker push "$CLEAN_USERNAME/devops-backend-java:latest"
 
       - name: Build and push frontend image
         env:

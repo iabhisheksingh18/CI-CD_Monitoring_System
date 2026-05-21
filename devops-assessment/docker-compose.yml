@@ -1,19 +1,28 @@
 services:
   backend:
     build: ./backend
-    container_name: django-backend
+    container_name: springboot-backend
     ports:
-      - "8000:8000"
+      - "8080:8080"
     environment:
       - DEBUG=1
-    command: python manage.py runserver 0.0.0.0:8000
 
   frontend:
     build:
       context: ./frontend
       args:
-        VITE_API_URL: http://backend:8000
+        VITE_API_URL: http://localhost:8080
     ports:
       - "80:80"
     depends_on:
       - backend
+
+  ai-service:
+    build: ./ai-service
+    container_name: fastapi-ai
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./ai-service/.env
+    environment:
+      - PYTHONUNBUFFERED=1

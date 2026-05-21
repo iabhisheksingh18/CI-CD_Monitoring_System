@@ -1,60 +1,54 @@
-# DevOps Assessment Application
+# AI-Powered CI/CD Monitoring Framework 🚀
 
-A simple "Hello World" full-stack application built with **Django** (Backend) and **React with Vite** (Frontend).
+A professional, microservices-based operation dashboard for real-time GitHub Actions monitoring, automated diagnostics, and predictive analytics. Built with a high-performance Java Spring Boot backend and a sleek, glassmorphic React frontend.
 
-## Project Overview
+## ✨ Core Features
+- **Live GitHub Monitor**: Real-time terminal log streaming directly from GitHub Actions.
+- **AI Log Diagnostics**: Instant error analysis and suggested fixes powered by LLMs.
+- **Operations Intelligence**: Interactive analytics for pipeline success rates and deployment trends.
+- **Microservice Health**: Unified dashboard for managing and monitoring multiple repository targets.
+- **Smart Data Isolation**: Multi-tenancy support ensuring users only see their own private project data.
+- **Automated 'Test & Monitor'**: One-click build triggering with automated terminal focus and live polling.
 
-- **Backend**: Django 6.0 (REST API)
-- **Frontend**: React (Vite, TypeScript, Lucide Icons)
-- **Styling**: Premium custom CSS with dark/light mode support.
-- **Communication**: REST API using Axios with CORS enabled.
+## 🛠️ Technology Stack
+- **Backend**: Spring Boot 3.x, Spring Security (JWT), MongoDB.
+- **Frontend**: React 18 (Vite), TypeScript, Recharts, Glassmorphism UI.
+- **AI Service**: FastAPI, Python, LLM Integration for log analysis.
+- **Infrastructure**: Docker & Docker Compose for seamless cross-platform orchestration.
 
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
-- Python 3.10+
-- Node.js 18+
-- npm 9+
+- Docker & Docker Desktop (Running)
+- GitHub Personal Access Token (PAT) with `repo` and `workflow` scopes.
 
-### Backend Setup (Django)
+### Quick Setup
+1. **Configure API Key**:
+   Open `backend/src/main/resources/application.properties` and add your GitHub token:
+   ```properties
+   github.token=ghp_your_token_here
+   ```
 
-1. Navigate to the backend directory:
+2. **Launch with Docker**:
+   Run the following command from the root directory:
    ```bash
-   cd backend
+   docker compose up --build -d
    ```
-2. Create and activate a virtual environment:
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-3. Install dependencies:
-   ```bash
-   pip install django django-cors-headers psycopg2-binary
-   ```
-4. Run the development server:
-   ```bash
-   python manage.py runserver
-   ```
-   The backend will be available at `http://localhost:8000/api/hello/`.
 
-### Frontend Setup (React/Vite)
+3. **Access the Platform**:
+   - **Frontend**: [http://localhost](http://localhost)
+   - **Backend API**: [http://localhost:8080](http://localhost:8080)
+   - **AI Service**: [http://localhost:8000](http://localhost:8000)
 
-1. Navigate to the frontend directory:
-   ```bash
-   cd frontend
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Run the development server:
-   ```bash
-   npm run dev
-   ```
-   The frontend will be available at `http://localhost:5173/`.
+### 🔑 Default Admin Access
+- **Username**: `admin`
+- **Password**: `admin123`
+*(Auto-seeded on first launch if the database is empty)*
 
-## Architecture Decisions
-- **Vite**: Used for its superior development experience and fast build times.
-- **Django**: Chosen for its robustness and ease of setting up a structured API.
-- **CORS**: Configured in Django to allow the React frontend to fetch data during local development.
-- **Responsive Design**: Custom CSS ensures the application looks premium on all screen sizes and supports dark mode.
+## 📂 Architecture Decision Records
+- **Multi-Tenancy**: Data is isolated at the owner level in MongoDB; users authenticated via JWT tokens.
+- **Real-time Polling**: Frontend uses high-frequency polling (5s) for live log streaming to maintain simplicity without the overhead of WebSockets.
+- **State Partitioning**: Selected projects are synchronized across Analytics, Terminal, and Log History components for a "Single Pane of Glass" experience.
+
+---
+Built with ❤️ by the AI-DevOps Team.

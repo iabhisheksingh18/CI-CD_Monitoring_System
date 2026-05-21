@@ -1,0 +1,123 @@
+/* ══════════════════════════════════════════════════
+   Settings Page
+   ══════════════════════════════════════════════════ */
+
+.settings-page {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.settings-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.settings-panel {
+  padding: 0;
+  overflow: hidden;
+}
+
+.panel-header {
+  padding: var(--space-xl);
+  border-bottom: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.panel-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-lg);
+  background: rgba(103, 114, 229, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.panel-header h3 {
+  font-size: 1.15rem;
+  margin-bottom: 4px;
+}
+
+.panel-header p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.panel-body {
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-group label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+.input-group input {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  color: var(--text-main);
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: all var(--duration-fast);
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 0 3px rgba(103, 114, 229, 0.15);
+}
+
+.input-hint {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+.panel-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--space-md);
+  padding-top: var(--space-lg);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.btn-success {
+  background: var(--success) !important;
+  color: #fff !important;
+  pointer-events: none;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.disabled-panel {
+  opacity: 0.6;
+  pointer-events: none;
+}

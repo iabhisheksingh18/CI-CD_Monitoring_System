@@ -1,31 +1,26 @@
-# -------- Stage 1: Base image --------
-FROM python:3.12-slim
+# Stage 1: Build the Java Application
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 
-# Prevent Python from writing pyc files
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+WORKDIR /app
+# Copy pom.xml and download dependencies to cache them
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
 
-# Set working directory
+# Copy source and build
+COPY src ./src
+RUN mvn package -DskipTests
+
+# Stage 2: Create the execution image
+FROM eclipse-temurin:17-jre
+
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
+# Expose port 8080
+EXPOSE 8080
 
-# Install Python dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy the generated JAR file
+COPY --from=build /app/target/*.jar app.jar
 
-# Copy project files
-COPY . .
+# Run the app
+ENTRYPOINT ["java", "-jar", "app.jar"]
 
-# Create non-root user
-RUN useradd -m appuser
-USER appuser
-
-# Expose port
-EXPOSE 8000
-
-# Start Django server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
